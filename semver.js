@@ -781,12 +781,15 @@ function replaceCaret(comp, loose) {
     else if (isX(m))
       ret = '>=' + M + '.0.0' /*RV:-0*/ +' <' + (+M + 1) + '.0.0-0';
     else if (isX(p)) {
+      /*RV:
       if (M === '0')
-        ret = '>=' + M + '.' + m + '.0' /*RV:-0*/ +' <' + M + '.' + (+m + 1) + '.0-0';
+        ret = '>=' + M + '.' + m + '.0-0 +' <' + M + '.' + (+m + 1) + '.0-0';
       else
+      */
         ret = '>=' + M + '.' + m + '.0' /*RV:-0*/ +' <' + (+M + 1) + '.0.0-0';
-    } else if (M === '0')
+    } /*RV: else if (M === '0')
       ret = '=' + M + '.' + m + '.' + p + pr;
+      */
     else if (pr)
       ret = '>=' + M + '.' + m + '.' + p + pr +
             ' <' + (+M + 1) + '.0.0-0';
