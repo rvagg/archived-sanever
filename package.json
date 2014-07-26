@@ -1,7 +1,7 @@
 {
-  "name": "semver",
+  "name": "sanever",
   "version": "3.0.1",
-  "description": "The semantic version parser used by npm.",
+  "description": "A saner semver parser",
   "main": "semver.js",
   "browser": "semver.browser.js",
   "min": "semver.min.js",
@@ -14,8 +14,8 @@
     "uglify-js": "~2.3.6"
   },
   "license": "BSD",
-  "repository": "git://github.com/isaacs/node-semver.git",
+  "repository": "git://github.com/rvagg/sanever.git",
   "bin": {
-    "semver": "./bin/semver"
+    "sanever": "./bin/semver"
   }
 }
