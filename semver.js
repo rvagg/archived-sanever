@@ -733,10 +733,10 @@ function replaceTilde(comp, loose) {
     if (isX(M))
       ret = '';
     else if (isX(m))
-      ret = '>=' + M + '.0.0-0 <' + (+M + 1) + '.0.0-0';
+      ret = '>=' + M + '.0.0' /*RV:-0*/ +' <' + (+M + 1) + '.0.0-0';
     else if (isX(p))
       // ~1.2 == >=1.2.0- <1.3.0-
-      ret = '>=' + M + '.' + m + '.0-0 <' + M + '.' + (+m + 1) + '.0-0';
+      ret = '>=' + M + '.' + m + '.0' /*RV:-0*/ +' <' + M + '.' + (+m + 1) + '.0-0';
     else if (pr) {
       debug('replaceTilde pr', pr);
       if (pr.charAt(0) !== '-')
@@ -745,7 +745,7 @@ function replaceTilde(comp, loose) {
             ' <' + M + '.' + (+m + 1) + '.0-0';
     } else
       // ~1.2.3 == >=1.2.3-0 <1.3.0-0
-      ret = '>=' + M + '.' + m + '.' + p + '-0' +
+      ret = '>=' + M + '.' + m + '.' + p + /*'-0' +*/
             ' <' + M + '.' + (+m + 1) + '.0-0';
 
     debug('tilde return', ret);
@@ -779,19 +779,19 @@ function replaceCaret(comp, loose) {
     if (isX(M))
       ret = '';
     else if (isX(m))
-      ret = '>=' + M + '.0.0-0 <' + (+M + 1) + '.0.0-0';
+      ret = '>=' + M + '.0.0' /*RV:-0*/ +' <' + (+M + 1) + '.0.0-0';
     else if (isX(p)) {
       if (M === '0')
-        ret = '>=' + M + '.' + m + '.0-0 <' + M + '.' + (+m + 1) + '.0-0';
+        ret = '>=' + M + '.' + m + '.0' /*RV:-0*/ +' <' + M + '.' + (+m + 1) + '.0-0';
       else
-        ret = '>=' + M + '.' + m + '.0-0 <' + (+M + 1) + '.0.0-0';
+        ret = '>=' + M + '.' + m + '.0' /*RV:-0*/ +' <' + (+M + 1) + '.0.0-0';
     } else if (M === '0')
       ret = '=' + M + '.' + m + '.' + p + pr;
     else if (pr)
       ret = '>=' + M + '.' + m + '.' + p + pr +
             ' <' + (+M + 1) + '.0.0-0';
     else
-      ret = '>=' + M + '.' + m + '.' + p + '-0' +
+      ret = '>=' + M + '.' + m + '.' + p + /*'-0' +*/
             ' <' + (+M + 1) + '.0.0-0';
 
     debug('caret return', ret);
@@ -845,8 +845,10 @@ function replaceXRange(comp, loose) {
         }
       }
 
-
-      ret = gtlt + M + '.' + m + '.' + p + '-0';
+      if (gtlt[0] === '>')
+        ret = gtlt + M + '.' + m + '.' + p; //RV
+      else
+        ret = gtlt + M + '.' + m + '.' + p + '-0';
     } else if (xM) {
       // allow any
       ret = '*';
@@ -854,9 +856,9 @@ function replaceXRange(comp, loose) {
       // append '-0' onto the version, otherwise
       // '1.x.x' matches '2.0.0-beta', since the tag
       // *lowers* the version value
-      ret = '>=' + M + '.0.0-0 <' + (+M + 1) + '.0.0-0';
+      ret = '>=' + M + '.0.0' /*RV -0*/ +' <' + (+M + 1) + '.0.0-0';
     } else if (xp) {
-      ret = '>=' + M + '.' + m + '.0-0 <' + M + '.' + (+m + 1) + '.0-0';
+      ret = '>=' + M + '.' + m + '.0' /*RV -0*/ +' <' + M + '.' + (+m + 1) + '.0-0';
     }
 
     debug('xRange return', ret);
@@ -885,18 +887,18 @@ function hyphenReplace($0,
   if (isX(fM))
     from = '';
   else if (isX(fm))
-    from = '>=' + fM + '.0.0-0';
+    from = '>=' + fM + '.0.0' //RV: -0';
   else if (isX(fp))
-    from = '>=' + fM + '.' + fm + '.0-0';
+    from = '>=' + fM + '.' + fm + '.0' //RV: -0';
   else
     from = '>=' + from;
 
   if (isX(tM))
     to = '';
   else if (isX(tm))
-    to = '<' + (+tM + 1) + '.0.0-0';
+    to = '<' + (+tM + 1) + '.0.0' //RV: -0';
   else if (isX(tp))
-    to = '<' + tM + '.' + (+tm + 1) + '.0-0';
+    to = '<' + tM + '.' + (+tm + 1) + '.0' //RV: -0';
   else if (tpr)
     to = '<=' + tM + '.' + tm + '.' + tp + '-' + tpr;
   else
